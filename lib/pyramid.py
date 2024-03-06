@@ -49,11 +49,13 @@ def process_multiscale(image, model, scales=[.5, 1, 2]):
             )
         else:
             banned = torch.max(detections, dim=1)[0].unsqueeze(1)
-        fmap_pos = torch.nonzero(detections[0].cpu()).t()
+        # fmap_pos = torch.nonzero(detections[0].cpu()).t()
+        fmap_pos = torch.nonzero(detections[0]).t()
         del detections
 
         # Recover displacements.
-        displacements = model.localization(dense_features)[0].cpu()
+        # displacements = model.localization(dense_features)[0].cpu()
+        displacements = model.localization(dense_features)[0]
         displacements_i = displacements[
             0, fmap_pos[0, :], fmap_pos[1, :], fmap_pos[2, :]
         ]
